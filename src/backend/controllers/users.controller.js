@@ -1,5 +1,5 @@
 const express = require('express')
-
+const bcrypt = require('bcrypt')
 //import models
 const User = require('../models/users.model')
 
@@ -7,13 +7,31 @@ const User = require('../models/users.model')
 const createNewUser = async (req, res) => { 
     const {userName, password, firstName, lastName, age, email, skills, disability} = req.body
 
-    try{
-        const user = await User.create({userName, password, firstName, lastName, age, email, skills, disability})
-        res.status(200).json(user)
-    }
-    catch(error){
-        res.status(400).json({message: error.message})
-    }
+    bcrypt.genSalt(10, (err, Salt) => {
+        bcrypt.hash(password, Salt, async (err, hash) => {
+            if(err){
+                res.status(400).json({message: err.message})
+            }
+            try{
+                const user = await User.create({
+                    userName : userName, 
+                    password : hash, 
+                    firstName: firstName,
+                    lastName: lastName,
+                    age : age, 
+                    email : email,
+                    skills : skills, 
+                    disability : disability
+                })
+                res.status(200).json(user)
+                
+            }
+            catch(error){
+                res.status(400).json({message: error.message})
+            }
+        })
+    })
+         
  }
 
  //Get all users
