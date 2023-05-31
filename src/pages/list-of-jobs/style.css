@@ -1,0 +1,25 @@
+.card-container {
+    display: flex;
+    justify-content: center;
+ }
+
+ .card-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .left-content {
+    flex-grow: 1;
+  }
+  
+  .right-content {
+    display: flex;
+    margin: 10px;
+  }
+  
+.right-content button {
+    margin-right: 8px; /* Add margin to the buttons */
+    height : 40px;
+    width : 100px
+  }
