@@ -20,6 +20,10 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    hasJob : {
+        type: Boolean,
+        required : true,
+    },
     age : {
         type : Number,
         required : true

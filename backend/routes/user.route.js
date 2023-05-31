@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 //import controller
-const {createNewUser, getAllUsers, getUserByUsername} = require('../controllers/users.controller')
+const {createNewUser, getAllUsers, getUserByUsername, updateUserByUsername} = require('../controllers/users.controller')
 
 //GET ALL
 router.get('/', getAllUsers)
@@ -19,7 +19,6 @@ router.delete('/:username', (req, res) => {
 })
 
 //UPDATE SINGLE
-router.patch('/:username', (req, res) => {
-    res.json({message : "Update one data"})
-})
+router.patch('/:username', updateUserByUsername)
+
 module.exports = router;

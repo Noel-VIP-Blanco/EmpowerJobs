@@ -5,7 +5,7 @@ const User = require('../models/users.model')
 
 //Create new user
 const createNewUser = async (req, res) => { 
-    const {userName, password, firstName, lastName, age, email, skills, disability} = req.body
+    const {userName, password, firstName, lastName, hasJob, age, email, skills, disability} = req.body
 
     bcrypt.genSalt(10, (err, Salt) => {
         bcrypt.hash(password, Salt, async (err, hash) => {
@@ -18,6 +18,7 @@ const createNewUser = async (req, res) => {
                     password : hash, 
                     firstName: firstName,
                     lastName: lastName,
+                    hasJob : hasJob,
                     age : age, 
                     email : email,
                     skills : skills, 
@@ -30,8 +31,7 @@ const createNewUser = async (req, res) => {
                 res.status(400).json({message: error.message})
             }
         })
-    })
-         
+    })       
  }
 
  //Get all users
@@ -52,8 +52,26 @@ const getUserByUsername = async (req, res) => {
     res.status(200).json(user)
  }
 
+ //FOR PRACTICE PURPOSES -------------------------------------------------
+//Updae user by Username
+const updateUserByUsername = async (req, res) => {
+    const {username} = req.params
+
+    const user = await User.find({userName : username})
+
+    if (user.length === 0){
+        return res.status(400).json({error : "Username does not exist"})
+    }
+
+    const updatedUser = await User.updateOne({userName : username}, {
+        ...req.body
+    })
+    res.status(200).json(updatedUser)
+}
+
  module.exports = {
     createNewUser,
     getAllUsers,
     getUserByUsername,
+    updateUserByUsername,
  }
