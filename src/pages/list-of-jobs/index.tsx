@@ -1,7 +1,7 @@
 import MyCard from "../../components/MyCard"
 import { useState, useEffect } from "react"
 import axios from "axios"
-
+import "./style.css"
 
 
 const ListOfJobs = () => {
@@ -20,7 +20,7 @@ const ListOfJobs = () => {
     }, [])
     console.log(listOfJobs)
     return (
-        <div>
+        <div className="pageContainer">
             <MyCard listOfJobs = {listOfJobs}/>
         </div>
     )

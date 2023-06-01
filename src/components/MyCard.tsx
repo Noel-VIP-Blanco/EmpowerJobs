@@ -2,7 +2,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import React from "react"
 import "./styles/Card.css"
-
+import 'bootstrap/dist/css/bootstrap.min.css'
 type IMyCard = {
   listOfJobs: any[]
 }
@@ -13,8 +13,8 @@ const MyCard : React.FC<IMyCard> = ({listOfJobs}) => {
       <>
       {listOfJobs.map((value, index) => {
         return(
-          <div className="card-container" key = {index}>
-        <Card bg="dark" text="light" style={{ width: '40rem' }} className="mb-8">
+          <div className="card-container" key={index}>
+        <Card bg="dark" text="light" style={{ width: '40rem' }}>
           <Card.Body className="card-body">
             <div className="left-content">
               <Card.Title>{value.jobName}</Card.Title>
