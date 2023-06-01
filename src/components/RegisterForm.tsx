@@ -43,7 +43,7 @@ export const RegisterForm = () => {
   const [skills, setSkills] = useState<string[]>([])
   const [disability, setDisability] = useState("")
 
-  //get all users to 
+  //get all users to compare if user exists
   const [users, setUsers] = useState<User[]>([])
   useEffect(() => {
     const fetchData = async () => {
@@ -57,11 +57,43 @@ export const RegisterForm = () => {
     fetchData()
   }, [])
 
+  const isEmailValid = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   //function called when button is pressed
   const registerHandler = async (e: React.FormEvent)  => {
     e.preventDefault()
-    const usernameExists = users.some(user => user.userName === username);
-    if(usernameExists){
+    if (
+      username === "" ||
+      password === "" ||
+      email === "" ||
+      firstName === "" ||
+      lastName === "" ||
+      age === 0 ||
+      skills.length === 0 ||
+      disability === ""
+    ){
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: `All Fields are required`,
+      })
+      return
+    }
+
+    if(!isEmailValid()){
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: `Invalid Email`,
+      })
+      return
+    }
+
+
+    if(username !== "" && users.some(user => user.userName === username)){
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -86,6 +118,22 @@ export const RegisterForm = () => {
             'User Registered!',
             'success'
           )
+          setUsername("");
+          setPassword("");
+          setEmail("");
+          setFirstName("");
+          setLastName("");
+          setAge(0);
+          setCheckboxes({
+            react: false,
+            angular: false,
+            javascript: false,
+            java: false,
+            database: false,
+            photography: false,
+          });
+          setSkills([]);
+          setDisability("");
         }
         )
         .catch(() => {
@@ -112,7 +160,7 @@ export const RegisterForm = () => {
               </span>
             </Form.Label>
             <Col sm={10}>
-              <Form.Control type="text" placeholder="Username" onChange={(e) => {setUsername(e.target.value)}}/>
+              <Form.Control required value={username} type="text" placeholder="Username" onChange={(e) => {setUsername(e.target.value)}}/>
             </Col>
           </Form.Group>
 
@@ -123,7 +171,7 @@ export const RegisterForm = () => {
               </span>
             </Form.Label>
             <Col sm={10}>
-              <Form.Control type="password" placeholder="Password"  onChange={(e) => {setPassword(e.target.value)}}/>
+              <Form.Control required value={password}  type="password" placeholder="Password"  onChange={(e) => {setPassword(e.target.value)}}/>
             </Col>
           </Form.Group>
 
@@ -134,7 +182,7 @@ export const RegisterForm = () => {
               </span>
             </Form.Label>
             <Col sm={10}>
-              <Form.Control type="email" placeholder="Email"  onChange={(e) => {setEmail(e.target.value)}} />
+              <Form.Control required value={email}  type="email" placeholder="Email"  onChange={(e) => {setEmail(e.target.value)}} />
             </Col>
           </Form.Group>
           
@@ -145,7 +193,7 @@ export const RegisterForm = () => {
               </span>
             </Form.Label>
             <Col sm={10}>
-              <Form.Control type="text" placeholder="First Name"  onChange={(e) => {setFirstName(e.target.value)}} />
+              <Form.Control required value={firstName}  type="text" placeholder="First Name"  onChange={(e) => {setFirstName(e.target.value)}} />
             </Col>
           </Form.Group>
 
@@ -156,7 +204,7 @@ export const RegisterForm = () => {
               </span>
             </Form.Label>
             <Col sm={10}>
-              <Form.Control type="text" placeholder="Last Name" onChange={(e) => {setLastName(e.target.value)}} />
+              <Form.Control required value={lastName} type="text" placeholder="Last Name" onChange={(e) => {setLastName(e.target.value)}} />
             </Col>
           </Form.Group>
 
@@ -167,7 +215,7 @@ export const RegisterForm = () => {
               </span>
             </Form.Label>
             <Col sm={3}>
-              <Form.Control type="number" placeholder="Age" onChange={(e) => {setAge(parseInt(e.target.value))}} />
+              <Form.Control required value={age} type="number" placeholder="Age" onChange={(e) => {setAge(parseInt(e.target.value))}} />
             </Col>
           </Form.Group>
 
@@ -289,7 +337,7 @@ export const RegisterForm = () => {
                       onChange={(event) => {handleRadioChange({event, setDisability})}}
                     />
                   </Col>
-      </Row>
+                </Row>
 
               </Col>
             </Row>
