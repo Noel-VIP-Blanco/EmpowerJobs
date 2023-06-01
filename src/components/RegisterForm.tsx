@@ -10,20 +10,6 @@ import Swal from 'sweetalert2';
 
 //import functions in function folder
 import {handleCheckboxChange, handleRadioChange} from "../util/functions/FormHandler"
-interface User {
-    _id: string;
-    userName: string;
-    password: string;
-    firstName: string;
-    lastName: string;
-    age: number;
-    email: string;
-    skills: string[];
-    disability: string;
-    createdAt: string;
-    updatedAt: string;
-    __v: number;
-  }
 
 export const RegisterForm = () => {
   const [username, setUsername] = useState("")
@@ -44,18 +30,18 @@ export const RegisterForm = () => {
   const [disability, setDisability] = useState("")
 
   //get all users to compare if user exists
-  const [users, setUsers] = useState<User[]>([])
+  const [user, setUser] = useState(null)
   useEffect(() => {
     const fetchData = async () => {
         try {
-            const response = await axios.get(`http://localhost:4000/register/`)
-            setUsers(response.data)
+            const response = await axios.get(`http://localhost:4000/register/${username}`)
+            setUser(response.data)
         } catch (error) {
-            setUsers([])
+            setUser(null)
         }
     }
     fetchData()
-  }, [])
+  }, [username])
 
   const isEmailValid = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -93,7 +79,7 @@ export const RegisterForm = () => {
     }
 
 
-    if(username !== "" && users.some(user => user.userName === username)){
+    if(user !== null){
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
