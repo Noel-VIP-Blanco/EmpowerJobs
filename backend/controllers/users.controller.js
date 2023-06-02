@@ -62,11 +62,33 @@ const updateUserByUsername = async (req, res) => {
     if (user.length === 0){
         return res.status(400).json({error : "Username does not exist"})
     }
+    const {userName, password, firstName, lastName, hasJob, age, email, skills, disability} = req.body
+    bcrypt.genSalt(10, (err, Salt) => {
+        bcrypt.hash(password, Salt, async (err, hash) => {
+            if(err){
+                res.status(400).json({message: err.message})
+            }
+            try{
+                const updatedUser = await User.updateOne({userName : username}, {
+                    userName : userName, 
+                    password : hash, 
+                    firstName: firstName,
+                    lastName: lastName,
+                    hasJob : hasJob,
+                    age : age, 
+                    email : email,
+                    skills : skills, 
+                    disability : disability
+                })
+                res.status(200).json(updatedUser)
+            }
+            catch(error){
+                res.status(400).json({message: error.message})
+            }
+        })
+    })    
 
-    const updatedUser = await User.updateOne({userName : username}, {
-        ...req.body
-    })
-    res.status(200).json(updatedUser)
+    
 }
 
  module.exports = {
