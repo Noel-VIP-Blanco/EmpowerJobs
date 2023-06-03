@@ -28,7 +28,9 @@ const NavBar = () => {
         className="navbar"
       >
         <Container>
-          <Navbar.Brand href="#">React-Bootstrap</Navbar.Brand>
+          <Navbar.Brand href="#">
+            {!user || user.userName !== "admin" ? "Applicant" : "Administrator"}
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
