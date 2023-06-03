@@ -20,6 +20,7 @@ const JobCard: React.FC<IJobCard> = ({ job, applyForJobHandler }) => {
     userName: string;
     skills: string[];
     disability: string;
+    hasJob: boolean;
   } | null>(null);
   useEffect(() => {
     const storedUser = localStorage.getItem("loginUser");

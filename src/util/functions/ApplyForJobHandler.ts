@@ -2,7 +2,12 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 interface IApplyForJobHandler {
-  loginUser: { userName: string; skills: string[]; disability: string } | null;
+  loginUser: {
+    userName: string;
+    skills: string[];
+    disability: string;
+    hasJob: boolean;
+  } | null;
   job: {
     jobName: string;
     prefferedSkills: string[];
@@ -25,6 +30,14 @@ export const ApplyForJobHandler = async ({
       confirmButtonColor: "#3085d6",
     }).then(() => {
       window.location.href = "/login";
+    });
+  } else if (loginUser.hasJob === true) {
+    console.log(loginUser.hasJob);
+    Swal.fire({
+      title: "Applied Failed",
+      text: "You have already accepted on company!",
+      icon: "error",
+      confirmButtonColor: "#3085d6",
     });
   } else {
     try {

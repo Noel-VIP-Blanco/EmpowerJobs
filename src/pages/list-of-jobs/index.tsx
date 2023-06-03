@@ -11,6 +11,7 @@ const ListOfJobs = () => {
     userName: string;
     skills: string[];
     disability: string;
+    hasJob: boolean;
   } | null>(null);
 
   useEffect(() => {

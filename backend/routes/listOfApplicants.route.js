@@ -5,9 +5,11 @@ const router = express.Router();
 const {
   getAllApplicants,
   createApplicants,
+  deleteApplicantsAfterAccepted,
 } = require("../controllers/listOfApplicants.controller");
 
 router.post("/", createApplicants);
 router.get("/", getAllApplicants);
+router.delete("/", deleteApplicantsAfterAccepted);
 
 module.exports = router;

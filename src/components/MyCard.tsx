@@ -6,7 +6,12 @@ import { ApplyForJobHandler } from "../util/functions/ApplyForJobHandler";
 
 type IMyCard = {
   listOfJobs: any[];
-  loginUser: { userName: string; skills: string[]; disability: string } | null;
+  loginUser: {
+    userName: string;
+    skills: string[];
+    disability: string;
+    hasJob: boolean;
+  } | null;
 };
 
 const MyCard: React.FC<IMyCard> = ({ listOfJobs, loginUser }) => {

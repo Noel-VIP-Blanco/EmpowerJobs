@@ -1,12 +1,14 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-
+//import functions
+import { AcceptHandler } from "../util/functions/AcceptDeclineJob";
 type IApplicantCard = {
   applicant: any;
+  key: number;
 };
 
-export const ApplicantCard: React.FC<IApplicantCard> = ({ applicant }) => {
+export const ApplicantCard: React.FC<IApplicantCard> = ({ applicant, key }) => {
   return (
     <div className="card-container">
       <Card bg="dark" text="light" style={{ width: "60rem" }}>
@@ -35,7 +37,12 @@ export const ApplicantCard: React.FC<IApplicantCard> = ({ applicant }) => {
             </div>
           </div>
           <div className="right-content">
-            <Button variant="secondary" onClick={() => {}}>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                AcceptHandler(applicant.userName);
+              }}
+            >
               Accept
             </Button>
             <Button variant="secondary" onClick={() => {}}>
