@@ -1,22 +1,20 @@
-import React from 'react';
-import NavBar from './components/NavBar';
-import {Routes, Route} from 'react-router-dom'
+import React from "react";
+import NavBar from "./components/NavBar";
+import { Routes, Route, redirect } from "react-router-dom";
 
 //import pages
-import Register from './pages/register/index'
-import Login from './pages/login';
-import ListOfJobs from './pages/list-of-jobs';
+import Register from "./pages/register/index";
+import Login from "./pages/login";
+import ListOfJobs from "./pages/list-of-jobs";
 function App() {
   return (
     <div className="App">
-      <NavBar/>
+      <NavBar />
       <Routes>
-        
-        <Route path = '/list-of-jobs' element = {<ListOfJobs/>}/>
-        <Route path = '/register' element = {<Register/>}/>
-        <Route path = '/login' element = {<Login/>}/>
+        <Route path="/" element={<ListOfJobs />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
-      
     </div>
   );
 }
