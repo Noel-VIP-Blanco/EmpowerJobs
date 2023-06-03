@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   MDBBtn,
   MDBModal,
@@ -9,26 +9,55 @@ import {
   MDBModalBody,
   MDBModalFooter,
 } from "mdb-react-ui-kit";
+//import function helpers
 
+//interface
 interface IModal {
   toggleShow: () => void;
   centredModal: boolean;
   setCentredModal: React.Dispatch<React.SetStateAction<boolean>>;
-  job: {
-    _id: string;
-    jobName: string;
-    prefferedSkills: string[];
-    suitableDisabilities: string[];
-    salaryPerYear: string[];
-  };
+  job: IJob;
+  applyForJobHandler: () => void;
+}
+interface IJob {
+  jobName: string;
+  prefferedSkills: string[];
+  suitableDisabilities: string[];
+  salaryPerYear: string;
+  description: string;
 }
 
+//////////////////////////
 const ModalForDetails: React.FC<IModal> = ({
   toggleShow,
   centredModal,
   setCentredModal,
-  job: { jobName, prefferedSkills, suitableDisabilities, salaryPerYear },
+  job: {
+    jobName,
+    prefferedSkills,
+    suitableDisabilities,
+    salaryPerYear,
+    description,
+  },
+  applyForJobHandler,
 }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  //try get data of the user from localstorage
+  const [loginUser, setLoginUser] = useState<{
+    userName: string;
+    skills: string[];
+    disability: string;
+  } | null>(null);
+  useEffect(() => {
+    const storedUser = localStorage.getItem("loginUser");
+    if (storedUser !== null) {
+      const parsedUser = JSON.parse(storedUser);
+      setLoginUser(parsedUser);
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   return (
     <MDBModal tabIndex="-1" show={centredModal} setShow={setCentredModal}>
       <MDBModalDialog centered>
@@ -55,7 +84,13 @@ const ModalForDetails: React.FC<IModal> = ({
             <MDBBtn color="secondary" onClick={toggleShow}>
               Close
             </MDBBtn>
-            <MDBBtn>Apply</MDBBtn>
+            <MDBBtn
+              onClick={() => {
+                applyForJobHandler();
+              }}
+            >
+              Apply
+            </MDBBtn>
           </MDBModalFooter>
         </MDBModalContent>
       </MDBModalDialog>

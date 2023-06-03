@@ -1,13 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ModalForDetails from "./ModalForDetails";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
+import axios from "axios";
+//import functions
+
 type IJobCard = {
   job: any;
+  applyForJobHandler: () => void;
 };
-const JobCard: React.FC<IJobCard> = ({ job }) => {
+const JobCard: React.FC<IJobCard> = ({ job, applyForJobHandler }) => {
   const [centredModal, setCentredModal] = useState(false);
   const toggleShow = () => setCentredModal(!centredModal);
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  //try get data of the user from localstorage
+  const [loginUser, setLoginUser] = useState<{
+    userName: string;
+    skills: string[];
+    disability: string;
+  } | null>(null);
+  useEffect(() => {
+    const storedUser = localStorage.getItem("loginUser");
+    if (storedUser !== null) {
+      const parsedUser = JSON.parse(storedUser);
+      setLoginUser(parsedUser);
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   return (
     <div className="card-container">
@@ -16,6 +37,9 @@ const JobCard: React.FC<IJobCard> = ({ job }) => {
         centredModal={centredModal}
         setCentredModal={setCentredModal}
         job={job}
+        applyForJobHandler={() => {
+          applyForJobHandler();
+        }}
       />
       <Card bg="dark" text="light" style={{ width: "60rem" }}>
         <Card.Body className="card-body">
@@ -27,7 +51,14 @@ const JobCard: React.FC<IJobCard> = ({ job }) => {
             <Button variant="primary" className="mr-2" onClick={toggleShow}>
               Details
             </Button>
-            <Button variant="secondary">Apply</Button>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                applyForJobHandler();
+              }}
+            >
+              Apply
+            </Button>
           </div>
         </Card.Body>
       </Card>

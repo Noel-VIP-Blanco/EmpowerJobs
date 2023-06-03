@@ -1,16 +1,22 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+//import context helper
+import { UserContext } from "../util/contexts/UserContext";
 const NavBar = () => {
+  const { user, setUser } = useContext(UserContext);
   const [loginUser, setLoginUser] = useState<{ userName: string } | null>(null);
+
   useEffect(() => {
     const storedUser = localStorage.getItem("loginUser");
+
     if (storedUser !== null) {
       const parsedUser = JSON.parse(storedUser);
       setLoginUser(parsedUser);
     }
-  }, [loginUser]);
+  }, [setUser]);
+  setUser(loginUser);
 
   return (
     <div>
@@ -22,11 +28,12 @@ const NavBar = () => {
         className="navbar"
       >
         <Container>
+          <Navbar.Brand href="#">React-Bootstrap</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
               <Nav.Link href="/">
-                {!loginUser || loginUser.userName !== "admin"
+                {!user || user.userName !== "admin"
                   ? "List of Jobs"
                   : "List of Applicants"}
               </Nav.Link>

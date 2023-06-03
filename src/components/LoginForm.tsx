@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
+
 import axios from "axios";
 import Swal from "sweetalert2";
 import {
@@ -9,18 +10,14 @@ import {
   MDBCard,
   MDBCardBody,
   MDBInput,
-  MDBIcon,
 } from "mdb-react-ui-kit";
-import { Link, useNavigate } from "react-router-dom";
-
-interface IUser {
-  password: string;
-}
+import { Link } from "react-router-dom";
+//import contect helper
+import { UserContext } from "../util/contexts/UserContext";
 export const LoginForm = () => {
+  const { setUser } = useContext(UserContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleLogin = async () => {
     try {
@@ -30,8 +27,15 @@ export const LoginForm = () => {
       });
       if (response.status === 200) {
         localStorage.setItem("loginUser", JSON.stringify(response.data));
-        Swal.fire("You are all done!", "User Login!", "success");
-        setIsLoggedIn(true);
+        setUser(response.data.userName);
+        Swal.fire({
+          title: "Login Successful",
+          text: "You are done!",
+          icon: "success",
+          confirmButtonColor: "#3085d6",
+        }).then(() => {
+          window.location.href = "/";
+        });
       } else {
         Swal.fire({
           icon: "error",
@@ -47,10 +51,6 @@ export const LoginForm = () => {
       });
     }
   };
-
-  if (isLoggedIn) {
-    navigate("/");
-  }
 
   return (
     <div className="formContainer">
@@ -111,9 +111,7 @@ export const LoginForm = () => {
                     <p className="mb-0">
                       Don't have an account?
                       <Link to="/register">
-                        <a href="" className="text-white-50 fw-bold">
-                          Sign Up
-                        </a>
+                        <span className="text-white-50 fw-bold">Sign Up</span>
                       </Link>
                     </p>
                   </div>

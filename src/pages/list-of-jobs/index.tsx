@@ -1,12 +1,16 @@
 import MyCard from "../../components/MyCard";
-import { ListOfApplicants } from "../list-of-applicants";
+import ListOfApplicants from "../../components/list-of-applicants";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./style.css";
 
 const ListOfJobs = () => {
   const [listOfJobs, setListOfJobs] = useState([]);
-  const [loginUser, setLoginUser] = useState<{ userName: string } | null>(null);
+  const [loginUser, setLoginUser] = useState<{
+    userName: string;
+    skills: string[];
+    disability: string;
+  } | null>(null);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("loginUser");
@@ -25,12 +29,10 @@ const ListOfJobs = () => {
     fetchData();
   }, []);
 
-  console.log(listOfJobs);
-
   return (
     <div className="pageContainer">
       {!loginUser || loginUser.userName !== "admin" ? (
-        <MyCard listOfJobs={listOfJobs} />
+        <MyCard listOfJobs={listOfJobs} loginUser={loginUser} />
       ) : (
         <ListOfApplicants />
       )}
