@@ -6,6 +6,7 @@ import "./style.css";
 
 const ListOfJobs = () => {
   const [listOfJobs, setListOfJobs] = useState([]);
+  const [listOfApplicants, setListOfApplicants] = useState([]);
   const [loginUser, setLoginUser] = useState<{
     userName: string;
     skills: string[];
@@ -18,23 +19,46 @@ const ListOfJobs = () => {
       const parsedUser = JSON.parse(storedUser);
       setLoginUser(parsedUser);
     }
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://localhost:4000/list-of-jobs");
-        setListOfJobs(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
   }, []);
+
+  useEffect(() => {
+    if (loginUser?.userName !== "admin" || loginUser === null) {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(
+            "http://localhost:4000/list-of-jobs"
+          );
+          setListOfJobs(response.data);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+      fetchData();
+    }
+  }, [loginUser]);
+
+  useEffect(() => {
+    if (loginUser?.userName === "admin") {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(
+            "http://localhost:4000/list-of-applicants"
+          );
+          setListOfApplicants(response.data);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+      fetchData();
+    }
+  }, [loginUser]);
 
   return (
     <div className="pageContainer">
       {!loginUser || loginUser.userName !== "admin" ? (
         <MyCard listOfJobs={listOfJobs} loginUser={loginUser} />
       ) : (
-        <ListOfApplicants />
+        <ListOfApplicants listOfApplicants={listOfApplicants} />
       )}
     </div>
   );

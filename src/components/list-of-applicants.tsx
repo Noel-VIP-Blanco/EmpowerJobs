@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import "./styles/Card.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import JobCard from "./JobCard";
+import { ApplicantCard } from "./ApplicantCard";
 
-const ListOfApplicants = () => {
+type IMyCard = {
+  listOfApplicants: any[];
+};
+
+const ListOfApplicants: React.FC<IMyCard> = ({ listOfApplicants }) => {
   return (
     <>
-      <div>List of applicants</div>
+      {listOfApplicants.map((applicant, index) => (
+        <ApplicantCard applicant={applicant} key={index} />
+      ))}
     </>
   );
 };
